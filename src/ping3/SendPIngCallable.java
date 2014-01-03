@@ -24,7 +24,7 @@ public final class SendPIngCallable implements Callable<Boolean> {
     public Boolean call() throws Exception {
 
         boolean flag = new ExecutePing().execPing(ip);
-        //System.out.println(ip + " " + flag);
+        System.out.println(ip + " " + flag);
 
         return flag;
 

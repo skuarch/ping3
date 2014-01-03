@@ -12,20 +12,15 @@ import java.io.InputStreamReader;
 public class ExecuteCommand {
 
     //==========================================================================
-    public ExecuteCommand() {
-    }
+    /*public ExecuteCommand() {
+    } // end ExecuteCommand*/
 
     //==========================================================================
-    public String exec(String command) throws IOException, InterruptedException {
+    public static String exec(String command) throws IOException, InterruptedException {
 
-        /*if (command == null || command.length() < 1) {
-         throw new IllegalArgumentException("command is null or empty");
-         }*/
-        
-        Process process = null;
+        Process process;
         int exitValue;
         String line = null;
-        StringBuilder lines = new StringBuilder();
 
         try {
 
@@ -35,40 +30,40 @@ public class ExecuteCommand {
 
             if (exitValue == 0) {
 
-                try (
-                        InputStream inputStream = process.getInputStream();
-                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
-
-                    while ((line = bufferedReader.readLine()) != null) {
-                        lines.append(line);
-                    }
-
-                }
+                line = readReturnCommand(process.getInputStream());
 
             } else {
 
-                try (
-                        InputStream inputStream = process.getErrorStream();
-                        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
-
-                    while ((line = bufferedReader.readLine()) != null) {
-                        lines.append(line);
-                    }
-
-                }
+                line = readReturnCommand(process.getErrorStream());
 
             }
 
         } catch (IOException | InterruptedException e) {
             throw e;
-        } finally {            
-            process = null;            
+        }
+
+        return line;
+
+    } // end exec
+
+    //==========================================================================
+    private static String readReturnCommand(InputStream inputStream) throws IOException {
+
+        String line;
+        StringBuilder lines = new StringBuilder();
+
+        try (
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
+
+            while ((line = bufferedReader.readLine()) != null) {
+                lines.append(line);
+            }
+
         }
 
         return lines.toString();
 
-    } // end 
+    } // end readReturnCommand
 
 } // end class

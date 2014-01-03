@@ -19,13 +19,13 @@ public class Main {
     HashMap<String, Integer> ips = FillHash.fillHash();
     HashMap<String, Integer> one = new HashMap<>();
 
-    int counter = 0;    
+    int counter = 0;
     int maximun = 120;
     int time = 1500;
 
     static long start = 0;
     static long end = 0;
-    
+
     //==========================================================================
     /**
      * @param args the command line arguments
@@ -38,8 +38,9 @@ public class Main {
             @Override
             public void run() {
                 end = System.currentTimeMillis();
-                System.out.println("milis " + (end-start));
-                System.out.println("seconds " + (end-start) / 1000);
+                System.out.println("milis " + (end - start));
+                System.out.println("seconds " + (end - start) / 1000);
+                System.out.println("minutes " + ((end - start) / 1000) / 60);
             }
         }));
         new Main().start();
@@ -68,11 +69,11 @@ public class Main {
 
                         if (counter == maximun) {
                             main.run(new HashMap<>(one));
-                            one.clear();                            
+                            one.clear();
                             t1.join(1);
                             Thread.sleep(1398);
                             counter = 0;
-                            
+
                         }
 
                     }
